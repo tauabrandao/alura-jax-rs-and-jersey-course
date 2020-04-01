@@ -35,7 +35,7 @@ public class CienteTest {
 
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
-		String conteudo = target.path("/carrinhos").request().get(String.class);
+		String conteudo = target.path("/carrinhos/1").request().get(String.class);
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
 		Assert.assertTrue(carrinho.getRua().contains("Rua Vergueiro"));
 
@@ -45,7 +45,7 @@ public class CienteTest {
 	public void testaQueBuscaUmProjetoTrazOProjetoEsperado() {
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
-		String conteudo = target.path("/projetos").request().get(String.class);
+		String conteudo = target.path("/projetos/1").request().get(String.class);
 		Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
 		Assert.assertEquals("Minha loja", projeto.getNome());
 	}
