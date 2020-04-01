@@ -15,17 +15,17 @@ public class ProjetoDAO {
 		banco.put(1l, new Projeto("Minha loja", 1l, 2014));
 		banco.put(2l, new Projeto("Alura", 2l, 2012));
 	}
-	
+
 	public void adiciona(Projeto projeto) {
 		long id = contador.incrementAndGet();
 		projeto.setId(id);
 		banco.put(id, projeto);
 	}
-	
+
 	public Projeto busca(Long id) {
 		return banco.get(id);
 	}
-	
+
 	public Projeto remove(long id) {
 		return banco.remove(id);
 	}
