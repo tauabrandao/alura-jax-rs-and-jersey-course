@@ -15,12 +15,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.thoughtworks.xstream.XStream;
-
 import br.com.alura.loja.modelo.Projeto;
 
 public class ProjetoTest {
-	
+
 	private HttpServer server;
 	private Client client;
 	private WebTarget target;
@@ -32,7 +30,7 @@ public class ProjetoTest {
 		config.register(new LoggingFilter());
 		this.client = ClientBuilder.newClient(config);
 		this.target = client.target("http://localhost:8080");
-		
+
 	}
 
 	@After
@@ -41,26 +39,21 @@ public class ProjetoTest {
 		System.out.println("Servidor parado");
 	}
 
-
 	@Test
 	public void testaQueBuscaUmProjetoTrazOProjetoEsperado() {
-		WebTarget target = client.target("http://localhost:8080");
-		String conteudo = target.path("/projetos/1").request().get(String.class);
-		Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
+		Projeto projeto = target.path("/projetos/1").request().get(Projeto.class);
 		Assert.assertEquals("Minha loja", projeto.getNome());
 	}
 
 	@Test
 	public void testaQueSuportaNovosProjetos() {
-		WebTarget target = client.target("http://localhost:8080");
 		Projeto projeto = new Projeto("Projeto teste", 343l, 2019);
-		String xml = projeto.toXML();
-		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
+		Entity<Projeto> entity = Entity.entity(projeto, MediaType.APPLICATION_XML);
 		Response response = target.path("/projetos").request().post(entity);
 		Assert.assertEquals(201, response.getStatus());
 		String location = response.getHeaderString("location");
-		String conteudo = client.target(location).request().get(String.class);
-		Assert.assertTrue(conteudo.contains("Projeto teste"));
+		Projeto projetoCarregado = client.target(location).request().get(Projeto.class);
+		Assert.assertEquals("Projeto teste", projetoCarregado.getNome());
 	}
 
 }
