@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.xml.internal.ws.client.ClientSchemaValidationTube;
 import com.thoughtworks.xstream.XStream;
 
 import br.com.alura.loja.modelo.Carrinho;
@@ -62,6 +63,7 @@ public class CienteTest {
 		carrinho.adiciona(new Produto(314l, "Tablet", 999, 1));
 		carrinho.setRua("Rua Teste de Desenvolvimento");
 		carrinho.setCidade("Florianopolis");
+		System.out.println(carrinho.getId());
 		String xml = carrinho.toXML();
 		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
 		Response response = target.path("/carrinhos").request().post(entity);
@@ -85,5 +87,29 @@ public class CienteTest {
 		String conteudo = client.target(location).request().get(String.class);
 		Assert.assertTrue(conteudo.contains("Projeto teste"));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

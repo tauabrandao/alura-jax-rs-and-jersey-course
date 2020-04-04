@@ -7,12 +7,16 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import sun.net.www.http.HttpCaptureOutputStream;
+
 public class Servidor {
 
 	public static void main(String[] args) throws IOException {
+
 		HttpServer server = inicializaServidor();
 		System.in.read();
 		server.stop();
+
 	}
 
 	static HttpServer inicializaServidor() {
