@@ -8,12 +8,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.xml.internal.ws.client.ClientSchemaValidationTube;
 import com.thoughtworks.xstream.XStream;
 
 import br.com.alura.loja.modelo.Carrinho;
@@ -28,6 +29,9 @@ public class CienteTest {
 	@Before
 	public void inicializaServidor() {
 		server = Servidor.inicializaServidor();
+		ClientConfig config = new ClientConfig();
+		config.register(new LoggingFilter());
+		this.client = ClientBuilder.newClient(config);
 	}
 
 	@After
@@ -38,7 +42,6 @@ public class CienteTest {
 
 	@Test
 	public void testaQueBuscarUmCarrinhoTrazOCarrinhoEsperado() {
-		this.client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		String conteudo = target.path("/carrinhos/1").request().get(String.class);
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
@@ -48,7 +51,6 @@ public class CienteTest {
 
 	@Test
 	public void testaQueBuscaUmProjetoTrazOProjetoEsperado() {
-		this.client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		String conteudo = target.path("/projetos/1").request().get(String.class);
 		Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
@@ -57,7 +59,6 @@ public class CienteTest {
 
 	@Test
 	public void testaQueSuportaNovosCarrinhos() {
-		this.client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		Carrinho carrinho = new Carrinho();
 		carrinho.adiciona(new Produto(314l, "Tablet", 999, 1));
@@ -76,7 +77,6 @@ public class CienteTest {
 
 	@Test
 	public void testaQueSuportaNovosProjetos() {
-		this.client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		Projeto projeto = new Projeto("Projeto teste", 343l, 2019);
 		String xml = projeto.toXML();
@@ -87,29 +87,5 @@ public class CienteTest {
 		String conteudo = client.target(location).request().get(String.class);
 		Assert.assertTrue(conteudo.contains("Projeto teste"));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
